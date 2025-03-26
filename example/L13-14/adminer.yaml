@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminer
+  labels:
+    app: adminer
+  namespace: adminer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adminer
+  template:
+    metadata:
+      labels:
+        app: adminer
+    spec:
+      containers:
+      - name: adminer
+        image: adminer
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminer-service
+  namespace: adminer
+  labels:
+    app: adminer
+spec:
+  type: NodePort
+  selector:
+    app: adminer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30001
